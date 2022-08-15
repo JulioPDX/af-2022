@@ -1,0 +1,30 @@
+---
+tenants:
+  Tenant_A:
+    mac_vrf_vni_base: 10000
+    vrfs:
+      Tenant_A:
+        vrf_vni: 11
+        svis:
+          100:
+            name: Tenant_A_MGMT_Zone_1
+            tags: [ mgmt ]
+            enabled: true
+            ip_address_virtual: 10.1.100.1/24
+          150:
+            name: Tenant_A_DATA_Zone_1
+            tags: [ data ]
+            enabled: true
+            ip_address_virtual: 10.1.150.1/24
+          200:
+            name: Tenant_A_DB_Zone_1
+            tags: [ db ]
+            enabled: true
+            ip_address_virtual: 10.1.200.1/24
+    l2vlans:
+      10:
+        name: Tenant_A_VMOTION
+        tags: [ vmotion ]
+      20:
+        name: EXTEND
+        tags: [ extend ]

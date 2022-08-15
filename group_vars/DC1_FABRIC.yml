@@ -1,0 +1,106 @@
+---
+
+fabric_name: DC1_FABRIC
+
+spine:
+  defaults:
+    raw_eos_cli: |
+      daemon TerminAttr
+        exec /usr/bin/TerminAttr -ingestgrpcurl=34.134.252.240:9910 -cvcompression=gzip -ingestauth=token,/tmp/token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=default -taillogs
+        no shutdown
+    platform: VEOS
+    bgp_as: 65100
+    # Overlay loopback IP and same pool can be assigned to both spine and l3leaf switches
+    # If same loopback pool is defined for both spine and l3leaf,
+    # < loopback_ipv4_offset > must be set in either one of the node_types
+    loopback_ipv4_pool: 192.168.0.0/24
+    # Recommended for vEOS
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+  nodes:
+    spine1:
+      id: 1
+      mgmt_ip: 192.168.0.10/24
+    spine2:
+      id: 2
+      mgmt_ip: 192.168.0.11/24
+
+l3leaf:
+  defaults:
+    raw_eos_cli: |
+      daemon TerminAttr
+        exec /usr/bin/TerminAttr -ingestgrpcurl=34.134.252.240:9910 -cvcompression=gzip -ingestauth=token,/tmp/token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=default -taillogs
+        no shutdown
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    platform: VEOS
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    # VTEP VXLAN Tunnel source loopback IP for leaf switches, assigned in /32s
+    # Assign range larger than total leaf switches
+    vtep_loopback_ipv4_pool: 192.168.54.0/24
+    loopback_ipv4_pool: 192.168.0.0/24
+    # Offset must be >= number of spines
+    loopback_ipv4_offset: 2
+    # Point to Point Network Summary range, assigned as /31 for each
+    # uplink interfaces
+    # Assign range larger than total [spines * total potential leafs * 2]
+    uplink_ipv4_pool: 172.31.255.0/24
+    uplink_switches: [spine1, spine2]
+    uplink_interfaces: [Ethernet2, Ethernet3, Ethernet4, Ethernet5]
+    mlag_interfaces: [Ethernet1, Ethernet6]
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+
+  node_groups:
+    DC1_LEAF1:
+      bgp_as: 65101
+      nodes:
+        leaf1:
+          id: 3
+          mgmt_ip: 192.168.0.12/24
+          # Interface configured on SPINES to connect to this leaf
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+        leaf2:
+          id: 4
+          mgmt_ip: 192.168.0.13/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+    DC1_LEAF2:
+      bgp_as: 65102
+      nodes:
+        leaf3:
+          id: 5
+          mgmt_ip: 192.168.0.14/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]
+        leaf4:
+          id: 6
+          mgmt_ip: 192.168.0.15/24
+          uplink_switch_interfaces: [Ethernet5, Ethernet5]
+
+cli: |
+  no aaa root
+  !
+  username admin privilege 15 role network-admin secret 5 $1$5O85YVVn$HrXcfOivJEnISTMb6xrJc.
+  username arista privilege 15 role network-admin secret 5 $1$4VjIjfd1$XkUVulbNDESHFzcxDU.Tk1
+  username arista ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDAJXG/amD7nd3lDC2B6HeUlS0obuPc0app9sHMzY+jpoJfNlOv7z0/mxIrHjP1JG7l72+DZ9nC/VEgz7AunNCmZN6Rns+wRtUuO20JtF2d5m/+3NGFPL4Cnv/P9j6mAt077v28gBDwdbOX6r7/8K9xkk24lkGd27UhW54hqHzgViDSY+1C/gEfIM53nAVsDPnNqHmIqtxJ/IoMZB70G77vtgZkhSJ34C/6M17fgV7kH+XFA++8zbex69vkia/ZHh/gVcNT3mqGgXSCKP79wqaCDkY8coAfBFn1+WhN8vX92imhYRxR57QG5VIGrVcLL/BKHUH8Xx4KneCxC3aVxgqL arista@ansible-2022-1-5707e42b
+  !
+  daemon TerminAttr
+    exec /usr/bin/TerminAttr -disableaaa -cvaddr=192.168.0.5:9910 -taillogs -cvauth=key,atd-lab -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+    no shutdown
+  !
+  radius-server host 192.168.0.1 key 7 0207165218120E
+  !
+  aaa group server radius atds
+    server 192.168.0.1
+  !
+  aaa authentication login default group atds local
+  aaa authorization exec default group atds local
+  aaa authorization commands all default local
+  !
+  ip radius source-interface Management1
+  !

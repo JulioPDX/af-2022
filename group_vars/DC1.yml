@@ -1,0 +1,24 @@
+---
+# OOB Management network default gateway
+mgmt_interface: Management1
+mgmt_gateway: 192.168.0.1
+mgmt_interface_vrf: default
+
+ntp:
+  servers:
+  - name: 192.168.0.1
+    vrf: default
+    iburst: true
+    local_interface: Management1
+
+dns_domain: atd.lab
+
+# Settings for VEOS Deployments
+# Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB
+p2p_uplinks_mtu: 1500
+
+# Adjust default bfd values, to avoid high CPU
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3

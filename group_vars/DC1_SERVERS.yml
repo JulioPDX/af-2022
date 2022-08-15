@@ -1,0 +1,48 @@
+---
+port_profiles:
+  TENANT_A_HYPERVISOR:
+    mode: trunk
+    vlans: "10,20,100,150"
+
+
+servers:
+  host1:
+    adapters:
+      - type: nic
+        endpoint_ports: [Ethernet1, Ethernet3]
+        switch_ports: [Ethernet4, Ethernet5]
+        switches: [leaf1]
+        profile: TENANT_A_HYPERVISOR
+        port_channel:
+          mode: active
+          description: PortChannel
+  host1:
+    adapters:
+      - type: nic
+        endpoint_ports: [Ethernet2, Ethernet4]
+        switch_ports: [Ethernet4, Ethernet5]
+        switches: [leaf2]
+        profile: TENANT_A_HYPERVISOR
+        port_channel:
+          mode: active
+          description: PortChannel
+  host2:
+    adapters:
+      - type: nic
+        endpoint_ports: [Ethernet1, Ethernet3]
+        switch_ports: [Ethernet4, Ethernet5]
+        switches: [leaf3]
+        profile: TENANT_A_HYPERVISOR
+        port_channel:
+          mode: active
+          description: PortChannel
+  host2:
+    adapters:
+      - type: nic
+        endpoint_ports: [Ethernet2, Ethernet4]
+        switch_ports: [Ethernet4, Ethernet5]
+        switches: [leaf4]
+        profile: TENANT_A_HYPERVISOR
+        port_channel:
+          mode: active
+          description: PortChannel
