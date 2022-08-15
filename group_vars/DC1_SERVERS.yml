@@ -6,7 +6,7 @@ port_profiles:
 
 
 servers:
-  host1:
+  host1-a:
     adapters:
       - type: nic
         endpoint_ports: [Ethernet1, Ethernet3]
@@ -16,7 +16,7 @@ servers:
         port_channel:
           mode: active
           description: PortChannel
-  host1:
+  host1-b:
     adapters:
       - type: nic
         endpoint_ports: [Ethernet2, Ethernet4]
@@ -26,7 +26,7 @@ servers:
         port_channel:
           mode: active
           description: PortChannel
-  host2:
+  host2-a:
     adapters:
       - type: nic
         endpoint_ports: [Ethernet1, Ethernet3]
@@ -36,7 +36,7 @@ servers:
         port_channel:
           mode: active
           description: PortChannel
-  host2:
+  host2-b:
     adapters:
       - type: nic
         endpoint_ports: [Ethernet2, Ethernet4]

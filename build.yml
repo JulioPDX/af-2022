@@ -19,15 +19,22 @@
       import_role:
         name: arista.avd.eos_cli_config_gen
 
-- name: Deploy Configurations
-  hosts: DC1
-  gather_facts: false
+- name: Configure deployment with CVP
+  hosts: ATD_CVP
+  connection: local
+  gather_facts: no
+
   tasks:
 
-    - name: deploy configuration to device
+    - name: run CVP provisioning
       tags: [deploy]
       import_role:
-        name: arista.avd.eos_config_deploy_eapi
+         name: arista.avd.eos_config_deploy_cvp
+          vars:
+            device_filter: DC1
+            state: present
+            cv_collection: v3
+            execute tasks: false
 
     - name: validate states on EOS devices
       tags: [validate]

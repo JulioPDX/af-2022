@@ -4,10 +4,7 @@ fabric_name: DC1_FABRIC
 
 spine:
   defaults:
-    raw_eos_cli: |
-      daemon TerminAttr
-        exec /usr/bin/TerminAttr -ingestgrpcurl=34.134.252.240:9910 -cvcompression=gzip -ingestauth=token,/tmp/token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=default -taillogs
-        no shutdown
+    raw_eos_cli: "{{ cli }}"
     platform: VEOS
     bgp_as: 65100
     # Overlay loopback IP and same pool can be assigned to both spine and l3leaf switches
@@ -30,10 +27,7 @@ spine:
 
 l3leaf:
   defaults:
-    raw_eos_cli: |
-      daemon TerminAttr
-        exec /usr/bin/TerminAttr -ingestgrpcurl=34.134.252.240:9910 -cvcompression=gzip -ingestauth=token,/tmp/token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=default -taillogs
-        no shutdown
+    raw_eos_cli: "{{ cli }}"
     bgp_defaults:
       - 'no bgp default ipv4-unicast'
       - 'distance bgp 20 200 200'
