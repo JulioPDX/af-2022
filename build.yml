@@ -1,6 +1,6 @@
 ---
 - name: Build Configurations
-  hosts: DC1
+  hosts: DC1_FABRIC
   gather_facts: false
   tasks:
 
@@ -22,7 +22,7 @@
 - name: Configure deployment with CVP
   hosts: ATD_CVP
   connection: local
-  gather_facts: no
+  gather_facts: false
 
   tasks:
 
@@ -35,6 +35,11 @@
             state: present
             cv_collection: v3
             execute tasks: false
+
+- name: Validate Configurations
+  hosts: DC1_FABRIC
+  gather_facts: false
+  tasks:
 
     - name: validate states on EOS devices
       tags: [validate]
