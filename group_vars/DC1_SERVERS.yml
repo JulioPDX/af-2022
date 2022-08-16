@@ -3,7 +3,7 @@
 port_profiles:
   TENANT_A_HYPERVISOR:
     mode: trunk
-    vlans: "10,20,100,150"
+    vlans: "10,100,150"
 
 
 servers:
