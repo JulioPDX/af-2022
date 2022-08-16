@@ -1,0 +1,16 @@
+---
+- name: Configure deployment with CVP
+  hosts: ATD_CVP
+  connection: local
+  gather_facts: false
+
+  tasks:
+
+    - name: run CVP provisioning
+      import_role:
+        name: arista.avd.eos_config_deploy_cvp
+      vars:
+        device_filter: DC1
+        state: present
+        cv_collection: v3
+        execute_tasks: false

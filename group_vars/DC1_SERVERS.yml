@@ -6,42 +6,22 @@ port_profiles:
 
 
 servers:
-  host1-a:
+  host1:
     adapters:
       - type: nic
-        endpoint_ports: [Ethernet1, Ethernet3]
-        switch_ports: [Ethernet4, Ethernet5]
-        switches: [leaf1]
+        endpoint_ports: [Ethernet1, Ethernet2]
+        switch_ports: [Ethernet4, Ethernet4]
+        switches: [leaf1, leaf2]
         profile: TENANT_A_HYPERVISOR
         port_channel:
           mode: active
           description: PortChannel
-  host1-b:
+  host2:
     adapters:
       - type: nic
-        endpoint_ports: [Ethernet2, Ethernet4]
-        switch_ports: [Ethernet4, Ethernet5]
-        switches: [leaf2]
-        profile: TENANT_A_HYPERVISOR
-        port_channel:
-          mode: active
-          description: PortChannel
-  host2-a:
-    adapters:
-      - type: nic
-        endpoint_ports: [Ethernet1, Ethernet3]
-        switch_ports: [Ethernet4, Ethernet5]
-        switches: [leaf3]
-        profile: TENANT_A_HYPERVISOR
-        port_channel:
-          mode: active
-          description: PortChannel
-  host2-b:
-    adapters:
-      - type: nic
-        endpoint_ports: [Ethernet2, Ethernet4]
-        switch_ports: [Ethernet4, Ethernet5]
-        switches: [leaf4]
+        endpoint_ports: [Ethernet1, Ethernet2]
+        switch_ports: [Ethernet4, Ethernet4]
+        switches: [leaf3, leaf4]
         profile: TENANT_A_HYPERVISOR
         port_channel:
           mode: active
