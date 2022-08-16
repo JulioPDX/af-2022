@@ -10,7 +10,7 @@ spine:
     # Overlay loopback IP and same pool can be assigned to both spine and l3leaf switches
     # If same loopback pool is defined for both spine and l3leaf,
     # < loopback_ipv4_offset > must be set in either one of the node_types
-    loopback_ipv4_pool: 192.168.0.0/24
+    loopback_ipv4_pool: 192.168.1.0/24
     # Recommended for vEOS
     bgp_defaults:
       - 'no bgp default ipv4-unicast'
@@ -38,7 +38,7 @@ l3leaf:
     # VTEP VXLAN Tunnel source loopback IP for leaf switches, assigned in /32s
     # Assign range larger than total leaf switches
     vtep_loopback_ipv4_pool: 192.168.54.0/24
-    loopback_ipv4_pool: 192.168.0.0/24
+    loopback_ipv4_pool: 192.168.1.0/24
     # Offset must be >= number of spines
     loopback_ipv4_offset: 2
     # Point to Point Network Summary range, assigned as /31 for each

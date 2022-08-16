@@ -11,7 +11,7 @@
       import_role:
         name: arista.avd.eos_config_deploy_cvp
       vars:
-        device_filter: DC1
         state: present
         cv_collection: v3
+        fabric_name: DC1_FABRIC
         execute_tasks: false
