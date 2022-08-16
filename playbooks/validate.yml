@@ -1,4 +1,5 @@
 ---
+
 - name: Validate Configurations
   hosts: DC1_FABRIC
   gather_facts: false

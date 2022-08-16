@@ -1,4 +1,5 @@
 ---
+
 tenants:
   Tenant_A:
     mac_vrf_vni_base: 10000

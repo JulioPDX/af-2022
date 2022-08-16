@@ -1,4 +1,5 @@
 ---
+
 # OOB Management network default gateway
 mgmt_interface: Management1
 mgmt_gateway: 192.168.0.1

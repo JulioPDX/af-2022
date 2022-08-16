@@ -1,4 +1,5 @@
 ---
+
 - name: Configure deployment with CVP
   hosts: ATD_CVP
   connection: local
